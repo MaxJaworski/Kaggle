@@ -1,12 +1,8 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LinearRegression, Lasso, LassoCV, RidgeCV, ElasticNetCV
-from sklearn.model_selection import cross_val_score, train_test_split, GridSearchCV
+from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor
-import seaborn as sns
-import matplotlib.pyplot as plt
-import joblib
 
 df = pd.read_csv('input/train.csv', index_col='id')
 

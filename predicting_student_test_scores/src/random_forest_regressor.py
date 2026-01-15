@@ -1,13 +1,8 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LinearRegression, Lasso, LassoCV, RidgeCV, ElasticNetCV
-from sklearn.model_selection import cross_val_score, train_test_split, GridSearchCV
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.tree import DecisionTreeRegressor
-import seaborn as sns
-import matplotlib.pyplot as plt
-import joblib
 
 df = pd.read_csv('input/train.csv', index_col='id')
 
@@ -34,20 +29,26 @@ X_train_best[cols_to_standardise] = scaler.fit_transform(X_train_best[cols_to_st
 X_test_best[cols_to_standardise] = scaler.transform(X_test_best[cols_to_standardise])
 
 #parameter tuning
+param_grid = {
+    "n_estimators": [100, 200, 500],
+    "max_depth": [None, 10, 20, 30]
+}
 
 rfr = RandomForestRegressor()
-rfr.fit(X_train_best, y_train)
-print(rfr.score(X_test_best, y_test))
+rfrcv = GridSearchCV(rfr, param_grid=param_grid, cv=5)
+rfrcv.fit(X_train_best, y_train)
+best_model = rfrcv.best_estimator_
 
-# param_grid = {
-#     "n_estimators": [200, 500],
-#     "max_depth": [None, 10, 20, 30],
-#     "min_samples_split": [2, 5, 10],
-#     "min_samples_leaf": [1, 2, 4],
-#     "max_features": ["sqrt", "log2"],
-#     "bootstrap": [True]
-# }
+#import and preprocess test data, use model to make predictions
+test = pd.read_csv('input/test.csv', index_col='id')
 
-# rfrcv = GridSearchCV(rfr, param_grid=param_grid, cv=5)
-# rfrcv.fit(X_train_best, y_train)
-# print(rfrcv.best_params_)
+test_new = test[['study_hours', 'class_attendance', 'sleep_hours', 'sleep_quality', 'study_method']]
+test_new = pd.get_dummies(test_new, columns=cols_to_encode, drop_first=True)
+test_new[cols_to_standardise] = scaler.transform(test_new[cols_to_standardise])
+
+preds = np.round(best_model.predict(test_new), 1)
+
+preds = pd.DataFrame({'id': test.index, 'exam_score':preds})
+
+preds.to_csv('results.csv', index=False)
+

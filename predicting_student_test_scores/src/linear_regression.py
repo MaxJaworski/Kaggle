@@ -1,11 +1,8 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LinearRegression, Lasso, LassoCV, RidgeCV, ElasticNetCV
-from sklearn.model_selection import cross_val_score, train_test_split
-import seaborn as sns
-import matplotlib.pyplot as plt
-import joblib
+from sklearn.linear_model import LinearRegression, Lasso, RidgeCV, ElasticNetCV
+from sklearn.model_selection import train_test_split
 
 df = pd.read_csv('input/train.csv', index_col='id')
 
@@ -31,29 +28,27 @@ scaler = StandardScaler()
 X_train_best[cols_to_standardise] = scaler.fit_transform(X_train_best[cols_to_standardise])
 X_test_best[cols_to_standardise] = scaler.transform(X_test_best[cols_to_standardise])
 
-# #build, train, and evaluate lr model 
-# lr = LinearRegression()
-# lr.fit(X_train_best, y_train)
-# print(lr.score(X_test_best, y_test))
+#build, train, and evaluate lr model 
+lr = LinearRegression()
+lr.fit(X_train_best, y_train)
+print(lr.score(X_test_best, y_test))
 
-# #build, train, and evaluate lasso model
-# lasso = Lasso(alpha=0.014419578466425472)
-# lasso.fit(X_train_best, y_train)
-# print(lasso.score(X_test_best, y_test))
+#build, train, and evaluate lasso model
+lasso = Lasso(alpha=0.014419578466425472)
+lasso.fit(X_train_best, y_train)
+print(lasso.score(X_test_best, y_test))
 
 #build, train, and evaluate ridge model
 ridge = RidgeCV(alphas=[0.001,0.01,0.1,1,10,100])
 ridge.fit(X_train_best, y_train)
-#print(ridge.score(X_test_best, y_test))
+print(ridge.score(X_test_best, y_test))
 
-# #elastic net
-# en = ElasticNetCV(cv=10)
-# en.fit(X_train_best, y_train)
-# print(en.score(X_test_best, y_test))
+#elastic net
+en = ElasticNetCV(cv=10)
+en.fit(X_train_best, y_train)
+print(en.score(X_test_best, y_test))
 
 #ridgecv best of the bunch with 0.7545053039679808
-
-#joblib.dump(ridge, 'best_model')
 
 #import and preprocess test data, use model to make predictions
 test = pd.read_csv('input/test.csv', index_col='id')

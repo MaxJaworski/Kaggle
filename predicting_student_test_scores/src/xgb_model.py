@@ -35,14 +35,14 @@ X, test = X.align(test, join='left', axis=1, fill_value=0)
 
 #build model
 xgb_model = XGBRegressor(
-    n_estimators=1000,     # number of trees
-    max_depth=6,           # max depth of each tree
-    learning_rate=0.05,    # shrinkage
-    subsample=0.8,         # row subsampling
-    colsample_bytree=0.8,  # feature subsampling
-    tree_method='hist',    # fast on large datasets
-    eval_metric='rmse',    # use RMSE for evaluation
-    n_jobs=-1,             # use all CPU cores
+    n_estimators=1000,     
+    max_depth=6,           
+    learning_rate=0.05,    
+    subsample=0.8,         
+    colsample_bytree=0.8,  
+    tree_method='hist',   
+    eval_metric='rmse',    
+    n_jobs=-1,             
     random_state=42
 )
 xgb_model.fit(X, y)
