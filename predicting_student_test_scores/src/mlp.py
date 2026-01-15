@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, BatchNormalization
-from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.models import Sequential # type: ignore
+from tensorflow.keras.layers import Dense, Dropout, BatchNormalization # type: ignore
+from tensorflow.keras.callbacks import EarlyStopping # type: ignore
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
