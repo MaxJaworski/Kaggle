@@ -8,8 +8,8 @@ from sklearn.metrics import mean_absolute_error
 from xgboost import XGBRegressor
 
 #load train and test data
-train = pd.read_csv(r'C:\Users\maxjj\Desktop\Kaggle\thermophysical_property_melting_point\input\train.csv', index_col='id')
-test = pd.read_csv(r'C:\Users\maxjj\Desktop\Kaggle\thermophysical_property_melting_point\input\test.csv', index_col='id')
+train = pd.read_csv('../input/train.csv', index_col='id')
+test = pd.read_csv('../input/test.csv', index_col='id')
 
 #split train into target and features, drop SMILES
 X = train.drop(columns=['Tm', 'SMILES'])
